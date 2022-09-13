@@ -1,21 +1,25 @@
 fn main() {
     let primes = make_primes(1_000_000_000);
-    println!("{primes:?}");
+    println!("done.");
+    drop(primes);
 }
 
-fn make_primes(limit: u32) -> Vec<u32> {
-    let mut primes = Vec::new();
-    primes.push(2);
-    'search: for candidate in (3..=limit).step_by(2) {
-        for p in &primes {
-            if p * p > candidate {
-                break;
-            }
-            if candidate % p == 0 {
-                continue 'search;
+fn make_primes(limit: usize) -> Vec<usize> {
+    let mut sieve = vec![true; limit];
+    sieve[0] = false;
+    for i in (2..limit).step_by(2) {
+        if sieve[i] {
+            for j in (2*i..limit).step_by(i) {
+                sieve[j] = false;
             }
         }
-        primes.push(candidate);
+    }
+
+    let mut primes = Vec::new();
+    for (i,&b) in sieve.iter().enumerate() {
+        if b {
+            primes.push(i+1);
+        }
     }
     primes
 }
