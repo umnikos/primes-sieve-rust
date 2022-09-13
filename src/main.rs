@@ -5,23 +5,23 @@ fn main() {
 
 fn make_primes(count: usize) -> Vec<u32> {
     let mut primes = Vec::new();
-    if count <= 0 {
+    if count == 0 {
         return primes;
     }
     primes.push(2);
-    let mut candidate = 3;
-    'outer: while primes.len() < count {
+    'search: for candidate in (3..).step_by(2) {
+        if primes.len() == count {
+            break;
+        }
         for p in &primes {
-            if p*p > candidate {
-                continue;
+            if p * p > candidate {
+                break;
             }
             if candidate % p == 0 {
-                candidate += 2;
-                continue 'outer;
+                continue 'search;
             }
         }
         primes.push(candidate);
-        candidate += 2;
     }
     primes
 }
