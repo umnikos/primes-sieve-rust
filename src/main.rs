@@ -1,18 +1,12 @@
 fn main() {
-    let primes = make_primes(10);
+    let primes = make_primes(1_000_000_000);
     println!("{primes:?}");
 }
 
-fn make_primes(count: usize) -> Vec<u32> {
+fn make_primes(limit: u32) -> Vec<u32> {
     let mut primes = Vec::new();
-    if count == 0 {
-        return primes;
-    }
     primes.push(2);
-    'search: for candidate in (3..).step_by(2) {
-        if primes.len() == count {
-            break;
-        }
+    'search: for candidate in (3..=limit).step_by(2) {
         for p in &primes {
             if p * p > candidate {
                 break;
