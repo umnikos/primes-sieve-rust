@@ -1,6 +1,6 @@
 
 fn main() {
-    let primes = make_primes(2_000_000_000);
+    let primes = make_primes(1_000_000_000);
 
     //write_to_file(primes);
     println!("done.");
@@ -25,7 +25,7 @@ fn make_primes(limit: usize) -> Vec<usize> {
     sieve[0] = false;
     for i in (2..limit).step_by(2) {
         if sieve[i] {
-            for j in (2*i..limit).step_by(i) {
+            for j in (i+i+1..limit).step_by(i+1) {
                 sieve[j] = false;
             }
         }
