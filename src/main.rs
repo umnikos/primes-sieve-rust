@@ -1,7 +1,8 @@
 use core::iter::*;
+use bitvec::prelude::*;
 
 fn main() {
-    let primes = make_primes(10_000_000_000);
+    let primes = make_primes(50_000_000_000);
 
     write_to_file(primes);
     println!("done.");
@@ -22,14 +23,13 @@ fn write_to_file<T: Iterator<Item=usize>>(primes: T) {
 }
 
 fn make_primes(limit: usize) -> impl Iterator<Item=usize> {
-    let mut sieve = vec![true; limit+1];
-    sieve[0] = false;
-    sieve[1] = false;
-    sieve[2] = true;
+    let mut sieve = bitvec![1; limit+1];
+    sieve.set(0,false);
+    sieve.set(1,false);
     for i in (3..=limit).step_by(2) {
         if sieve[i] {
             for j in (i*i..=limit).step_by(i) {
-                sieve[j] = false;
+                sieve.set(j,false);
             }
         }
     }
