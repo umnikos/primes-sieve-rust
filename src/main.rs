@@ -21,6 +21,7 @@ fn write_to_file<T: Iterator<Item = usize>>(primes: T) {
     }
 }
 
+// WARNING: not very accurate.
 #[inline(always)]
 fn isqrt(x: usize) -> usize {
     (x as f64).sqrt() as usize
