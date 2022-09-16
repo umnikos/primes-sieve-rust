@@ -15,8 +15,7 @@ fn write_to_file<T: Iterator<Item=usize>>(primes: T) {
     let mut file = BufWriter::new(file); // BufWriter wrapper for performance
 
     for p in primes {
-        let s = p.to_string();
-        let s = s + "\n";
+        let s = p.to_string() + "\n";
         file.write(s.as_bytes()).expect("can't write to file!");
     }
 
@@ -41,7 +40,7 @@ fn make_primes(limit: usize) -> impl Iterator<Item=usize> {
             .enumerate()
             .skip(1)
             .step_by(2)
-            .filter_map(|(i, x)|
+            .filter_map(#[inline(always)] |(i, x)|
                 x.then_some(i));
     std::iter::once(2).chain(primes_without_2)
 }
