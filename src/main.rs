@@ -2,7 +2,7 @@ use core::iter::*;
 use bitvec::prelude::*;
 
 fn main() {
-    let primes = make_primes(50_000_000_000);
+    let primes = make_primes(2_000_000_000);
 
     write_to_file(primes);
     println!("done.");
@@ -28,7 +28,7 @@ fn make_primes(limit: usize) -> impl Iterator<Item=usize> {
     sieve.set(1,false);
     for i in (3..=limit).step_by(2) {
         if sieve[i] {
-            for j in (i*i..=limit).step_by(i) {
+            for j in (i*i..=limit).step_by(2*i) {
                 sieve.set(j,false);
             }
         }
