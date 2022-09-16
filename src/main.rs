@@ -1,5 +1,5 @@
-use core::iter::*;
 use bitvec::prelude::*;
+use core::iter::*;
 
 fn main() {
     let primes = make_primes(2_000_000_000);
@@ -8,7 +8,7 @@ fn main() {
     println!("done.");
 }
 
-fn write_to_file<T: Iterator<Item=usize>>(primes: T) {
+fn write_to_file<T: Iterator<Item = usize>>(primes: T) {
     use std::fs::*;
     use std::io::*;
 
@@ -19,28 +19,28 @@ fn write_to_file<T: Iterator<Item=usize>>(primes: T) {
         let s = p.to_string() + "\n";
         file.write(s.as_bytes()).expect("can't write to file!");
     }
-
 }
 
-fn make_primes(limit: usize) -> impl Iterator<Item=usize> {
+#[inline(always)]
+fn isqrt(x: usize) -> usize {
+    (x as f64).sqrt() as usize
+}
+
+fn make_primes(limit: usize) -> impl Iterator<Item = usize> {
     let mut sieve = bitvec![1; limit+1];
-    sieve.set(0,false);
-    sieve.set(1,false);
-    for i in (3..=limit).step_by(2) {
+    sieve.set(0, false);
+    sieve.set(1, false);
+    for i in (3..=isqrt(limit) + 4).step_by(2) {
         if sieve[i] {
-            for j in (i*i..=limit).step_by(2*i) {
-                sieve.set(j,false);
+            for j in (i * i..=limit).step_by(2 * i) {
+                sieve.set(j, false);
             }
         }
     }
 
-    let primes_without_2 =
-        sieve
-            .into_iter()
-            .enumerate()
-            .skip(1)
-            .step_by(2)
-            .filter_map(#[inline(always)] |(i, x)|
-                x.then_some(i));
+    let primes_without_2 = sieve.into_iter().enumerate().skip(1).step_by(2).filter_map(
+        #[inline(always)]
+        |(i, x)| x.then_some(i),
+    );
     std::iter::once(2).chain(primes_without_2)
 }
