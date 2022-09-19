@@ -8,7 +8,7 @@ pub struct PrimeIterator<I: Iterator<Item = usize>> {
 
 impl<I: Iterator<Item = usize>> Iterator for PrimeIterator<I> {
     type Item = usize;
-    fn next(&mut self) -> Option<usize> { Some(self.primes.next()?) }
+    fn next(&mut self) -> Option<usize> { self.primes.next() }
 }
 
 pub struct PrimeChecker {
