@@ -8,6 +8,8 @@ edition = "2021"
 [dependencies]
 bitvec = "*"
 
+# https://github.com/rust-lang/rust/issues/47745
 [profile.release]
-debug = true
+lto = true
+codegen-units = 1
 
