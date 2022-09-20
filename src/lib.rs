@@ -11,6 +11,7 @@ impl<I: Iterator<Item = usize>> Iterator for PrimeIterator<I> {
     fn next(&mut self) -> Option<usize> { self.primes.next() }
 }
 
+#[derive(Clone)]
 pub struct PrimeChecker {
     primes: Vec<usize>,
     limit: usize,
