@@ -8,7 +8,9 @@ pub struct PrimeIterator<I: Iterator<Item = usize>> {
 
 impl<I: Iterator<Item = usize>> Iterator for PrimeIterator<I> {
     type Item = usize;
-    fn next(&mut self) -> Option<usize> { self.primes.next() }
+    fn next(&mut self) -> Option<usize> {
+        self.primes.next()
+    }
 }
 
 #[derive(Clone)]
@@ -40,8 +42,6 @@ impl PrimeChecker {
     }
 }
 
-
-
 pub fn make_primes(limit: usize) -> PrimeIterator<impl Iterator<Item = usize>> {
     // WARNING: not very accurate.
     #[inline(always)]
@@ -66,8 +66,5 @@ pub fn make_primes(limit: usize) -> PrimeIterator<impl Iterator<Item = usize>> {
     );
     let primes = std::iter::once(2).chain(primes_without_2);
 
-    PrimeIterator {
-        primes,
-        limit,
-    }
+    PrimeIterator { primes, limit }
 }
