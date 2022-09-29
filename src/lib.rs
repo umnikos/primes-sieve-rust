@@ -31,7 +31,7 @@ impl<I: Iterator<Item = usize>> PrimeIterator<I> {
 impl PrimeChecker {
     pub fn is_prime(&self, n: usize) -> Option<bool> {
         if self.limit >= n {
-            return Some(self.primes.binary_search(&n).is_ok());
+            Some(self.primes.binary_search(&n).is_ok())
         } else {
             let isqrt = ((n as f64).sqrt() as usize) + 5;
             for &p in &self.primes {
@@ -42,7 +42,7 @@ impl PrimeChecker {
                     return Some(false);
                 }
             }
-            return None;
+            None
         }
     }
 

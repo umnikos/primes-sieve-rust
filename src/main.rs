@@ -16,6 +16,6 @@ fn write_to_file<T: Iterator<Item = usize>>(primes: T) {
 
     for p in primes {
         let s = p.to_string() + "\n";
-        file.write(s.as_bytes()).expect("can't write to file!");
+        file.write_all(s.as_bytes()).expect("can't write to file!");
     }
 }
