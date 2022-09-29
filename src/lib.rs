@@ -30,15 +30,24 @@ impl<I: Iterator<Item = usize>> PrimeIterator<I> {
 
 impl PrimeChecker {
     pub fn is_prime(&self, n: usize) -> Option<bool> {
-        let limit = self.limit;
-        if limit * limit < n {
-            return None;
-        }
-        if limit >= n {
+        if self.limit >= n {
             return Some(self.primes.binary_search(&n).is_ok());
         } else {
-            None // TODO: implement
+            let isqrt = ((n as f64).sqrt() as usize) + 5;
+            for &p in &self.primes {
+                if p > isqrt {
+                    return Some(true);
+                }
+                if n % p == 0 {
+                    return Some(false);
+                }
+            }
+            return None;
         }
+    }
+
+    pub fn iter(&self) -> std::slice::Iter<'_, usize> {
+        self.primes.iter()
     }
 }
 
