@@ -13,3 +13,5 @@ bitvec = "*"
 lto = true
 codegen-units = 1
 
+[dev-dependencies]
+inquire = "*"

@@ -1,10 +1,17 @@
+use inquire;
 use primes::make_primes;
 
 fn main() {
-    let primes = make_primes(2_000_000);
-
+    let limit: usize = prompt_user_for_limit();
+    let primes = make_primes(limit);
     write_to_file(primes);
-    println!("done.");
+    println!("done!");
+}
+
+fn prompt_user_for_limit() -> usize {
+    inquire::CustomType::<usize>::new("Generate primes up to:")
+        .prompt()
+        .unwrap()
 }
 
 fn write_to_file<T: Iterator<Item = usize>>(primes: T) {
