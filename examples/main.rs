@@ -1,7 +1,7 @@
 use primes::make_primes;
 
 fn main() {
-    let primes = make_primes(2_000_000_000);
+    let primes = make_primes(2_000_000);
 
     write_to_file(primes);
     println!("done.");
