@@ -52,16 +52,17 @@ impl PrimeChecker {
 }
 
 pub fn make_primes(limit: usize) -> PrimeIterator<impl Iterator<Item = usize>> {
-    // WARNING: not very accurate.
     #[inline(always)]
     fn isqrt(x: usize) -> usize {
         (x as f64).sqrt() as usize
     }
 
+    assert!(limit >= 2);
+
     let mut sieve = bitvec![1; limit+1];
     sieve.set(0, false);
     sieve.set(1, false);
-    for i in (3..=isqrt(limit) + 4).step_by(2) {
+    for i in (3..=isqrt(limit)).step_by(2) {
         if sieve[i] {
             for j in (i * i..=limit).step_by(2 * i) {
                 sieve.set(j, false);

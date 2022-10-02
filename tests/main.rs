@@ -1,4 +1,6 @@
 use primes::*;
+use quickcheck::*;
+use quickcheck_macros::quickcheck;
 
 #[test]
 fn primes_to_7() {
@@ -16,4 +18,31 @@ fn primes_to_100() {
             89, 97
         ]
     );
+}
+
+#[test]
+fn primes_to_2() {
+    let res: Vec<usize> = make_primes(2).collect();
+    assert_eq!(res, vec![2]);
+}
+
+#[quickcheck]
+fn prime_limit_not_undershot(limit: usize) -> TestResult {
+    if !(2..=1_000_000).contains(&limit) {
+        return TestResult::discard();
+    }
+    let primes: Vec<usize> = make_primes(limit).collect();
+    TestResult::from_bool(
+        make_primes(limit + 1000)
+            .filter(|&p| p <= limit)
+            .all(|p| primes.contains(&p)),
+    )
+}
+
+#[quickcheck]
+fn prime_limit_not_overshot(limit: usize) -> TestResult {
+    if !(2..=1_000_000).contains(&limit) {
+        return TestResult::discard();
+    }
+    TestResult::from_bool(make_primes(limit).all(|p| p <= limit))
 }
