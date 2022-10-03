@@ -1,13 +1,19 @@
 use inquire;
 use primes::make_primes;
+use std::time::Instant;
 
 fn main() {
     let limit: usize = prompt_user_for_limit();
     let filename: String = prompt_user_for_filename();
-    println!("generating primes...");
+    println!("Generating primes...");
+    let start = Instant::now();
+
     let primes = make_primes(limit);
     write_to_file(primes, filename);
-    println!("done!");
+
+    let time_taken = start.elapsed();
+
+    println!("Done! Took {} seconds", time_taken.as_secs_f32());
 }
 
 fn prompt_user_for_limit() -> usize {

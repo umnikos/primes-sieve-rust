@@ -77,10 +77,12 @@ pub fn make_primes(limit: usize) -> PrimeIterator<Box<dyn Iterator<Item = usize>
         }
     }
 
-    let primes_without_2 = sieve.into_iter().enumerate().skip(1).step_by(2).filter_map(
-        #[inline(always)]
-        |(i, x)| x.then_some(i),
-    );
+    let primes_without_2 = sieve
+        .into_iter()
+        .enumerate()
+        .skip(1)
+        .step_by(2)
+        .filter_map(|(i, x)| x.then_some(i));
     let primes = std::iter::once(2).chain(primes_without_2);
 
     PrimeIterator {
