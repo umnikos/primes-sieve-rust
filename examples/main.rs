@@ -1,5 +1,4 @@
 use inquire;
-use inquire::validator::Validation;
 use primes::make_primes;
 
 fn main() {
@@ -13,13 +12,6 @@ fn main() {
 
 fn prompt_user_for_limit() -> usize {
     inquire::CustomType::<usize>::new("Generate primes up to:")
-        .with_validator(|&input: &usize| {
-            if input >= 2 {
-                Ok(Validation::Valid)
-            } else {
-                Ok(Validation::Invalid("Limit should be at least 2".into()))
-            }
-        })
         .prompt()
         .unwrap()
 }

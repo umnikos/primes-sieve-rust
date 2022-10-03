@@ -26,6 +26,18 @@ fn primes_to_2() {
     assert_eq!(res, vec![2]);
 }
 
+#[test]
+fn primes_to_1() {
+    let res: Vec<usize> = make_primes(1).collect();
+    assert_eq!(res, vec![]);
+}
+
+#[test]
+fn primes_to_0() {
+    let res: Vec<usize> = make_primes(0).collect();
+    assert_eq!(res, vec![]);
+}
+
 #[quickcheck]
 fn prime_limit_not_undershot(limit: usize) -> TestResult {
     if !(2..=1_000_000).contains(&limit) {

@@ -1,5 +1,6 @@
 use bitvec::prelude::*;
 use core::iter::*;
+use no_panic::no_panic;
 
 pub struct PrimeIterator<I: Iterator<Item = usize>> {
     primes: I,
@@ -29,6 +30,7 @@ impl<I: Iterator<Item = usize>> PrimeIterator<I> {
 }
 
 impl PrimeChecker {
+    #[no_panic]
     pub fn is_prime(&self, n: usize) -> Option<bool> {
         if self.limit >= n {
             Some(self.primes.binary_search(&n).is_ok())
@@ -51,13 +53,18 @@ impl PrimeChecker {
     }
 }
 
-pub fn make_primes(limit: usize) -> PrimeIterator<impl Iterator<Item = usize>> {
+pub fn make_primes(limit: usize) -> PrimeIterator<Box<dyn Iterator<Item = usize>>> {
     #[inline(always)]
     fn isqrt(x: usize) -> usize {
         (x as f64).sqrt() as usize
     }
 
-    assert!(limit >= 2);
+    if limit < 2 {
+        return PrimeIterator {
+            primes: Box::from(std::iter::empty()),
+            limit,
+        };
+    }
 
     let mut sieve = bitvec![1; limit+1];
     sieve.set(0, false);
@@ -76,5 +83,8 @@ pub fn make_primes(limit: usize) -> PrimeIterator<impl Iterator<Item = usize>> {
     );
     let primes = std::iter::once(2).chain(primes_without_2);
 
-    PrimeIterator { primes, limit }
+    PrimeIterator {
+        primes: Box::from(primes),
+        limit,
+    }
 }
