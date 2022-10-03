@@ -66,12 +66,24 @@ pub fn make_primes(limit: usize) -> PrimeIterator<Box<dyn Iterator<Item = usize>
         };
     }
 
-    let mut sieve = bitvec![1; limit+1];
-    sieve.set(0, false);
-    sieve.set(1, false);
-    for i in (3..=isqrt(limit)).step_by(2) {
+    // 0 -> 1
+    // 1 -> 3
+    // 2 -> 5
+    // ......
+    #[inline(always)]
+    fn to_index(x: usize) -> usize {
+        (x - 1) / 2
+    }
+    #[inline(always)]
+    fn from_index(x: usize) -> usize {
+        x * 2 + 1
+    }
+
+    let mut sieve = bitvec![1; to_index(limit)+1];
+
+    for i in to_index(3)..=to_index(isqrt(limit)) {
         if sieve[i] {
-            for j in (i * i..=limit).step_by(2 * i) {
+            for j in (to_index(from_index(i).pow(2))..=to_index(limit)).step_by(from_index(i)) {
                 sieve.set(j, false);
             }
         }
@@ -81,8 +93,7 @@ pub fn make_primes(limit: usize) -> PrimeIterator<Box<dyn Iterator<Item = usize>
         .into_iter()
         .enumerate()
         .skip(1)
-        .step_by(2)
-        .filter_map(|(i, x)| x.then_some(i));
+        .filter_map(|(i, x)| x.then_some(from_index(i)));
     let primes = std::iter::once(2).chain(primes_without_2);
 
     PrimeIterator {
