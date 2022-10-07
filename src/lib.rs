@@ -1,7 +1,10 @@
+//! A library for generating and using large arrays of prime numbers.
+
 use bitvec::prelude::*;
 use core::iter::*;
 use no_panic::no_panic;
 
+/// An iterator over some number of primes.
 pub struct PrimeIterator<I: Iterator<Item = usize>> {
     primes: I,
     limit: usize,
@@ -14,6 +17,7 @@ impl<I: Iterator<Item = usize>> Iterator for PrimeIterator<I> {
     }
 }
 
+/// A vector containing some number of primes.
 #[derive(Clone)]
 pub struct PrimeChecker {
     primes: Vec<usize>,
@@ -31,6 +35,7 @@ impl<I: Iterator<Item = usize>> PrimeIterator<I> {
 
 impl PrimeChecker {
     #[no_panic]
+    /// Use the primes in the vector to check whether a given number is prime.
     pub fn is_prime(&self, n: usize) -> Option<bool> {
         if self.limit >= n {
             Some(self.primes.binary_search(&n).is_ok())
@@ -53,6 +58,8 @@ impl PrimeChecker {
     }
 }
 
+/// Create an iterator over the primes from 1 to N.
+/// Implemented using a sieve of Eratosthenes, may take a while.
 pub fn make_primes(limit: usize) -> PrimeIterator<Box<dyn Iterator<Item = usize>>> {
     #[inline(always)]
     fn isqrt(x: usize) -> usize {
