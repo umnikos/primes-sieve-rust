@@ -55,6 +55,7 @@ pub struct PrimeVec {
     primes: Vec<usize>,
     limit: usize,
 }
+
 impl PrimeIter {
     pub fn into_prime_vec(self) -> PrimeVec {
         PrimeVec {
@@ -94,6 +95,8 @@ impl PrimeChecker for PrimeSieve {
             Some(false)
         } else if n == 2 {
             Some(true)
+        } else if n % 2 == 0 {
+            Some(false)
         } else if self.limit >= n {
             Some(self.primes[to_index(n)])
         } else {
