@@ -22,3 +22,9 @@ impl From<PrimeSieve> for PrimeIter {
         x.into_iter()
     }
 }
+
+impl From<PrimeSieve> for PrimeVec {
+    fn from(x: PrimeSieve) -> Self {
+        x.into_iter().into()
+    }
+}

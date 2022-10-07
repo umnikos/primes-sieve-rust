@@ -56,15 +56,6 @@ pub struct PrimeVec {
     limit: usize,
 }
 
-impl PrimeIter {
-    pub fn into_prime_vec(self) -> PrimeVec {
-        PrimeVec {
-            primes: self.primes.collect(),
-            limit: self.limit,
-        }
-    }
-}
-
 pub trait PrimeChecker {
     fn is_prime(&self, n: usize) -> Option<bool>;
 }
