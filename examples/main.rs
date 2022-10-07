@@ -1,5 +1,5 @@
 use inquire;
-use primes::make_primes;
+use primes::*;
 use std::time::Instant;
 
 fn main() {
@@ -8,7 +8,7 @@ fn main() {
     println!("Generating primes...");
     let start = Instant::now();
 
-    let primes = make_primes(limit);
+    let primes = PrimeSieve::new(limit).into_iter();
     write_to_file(primes, filename);
 
     let time_taken = start.elapsed();

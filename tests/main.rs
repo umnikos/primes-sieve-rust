@@ -4,13 +4,13 @@ use quickcheck_macros::quickcheck;
 
 #[test]
 fn primes_to_7() {
-    let res: Vec<usize> = make_primes(7).collect();
+    let res: Vec<usize> = PrimeSieve::new(7).into_iter().collect();
     assert_eq!(res, vec![2, 3, 5, 7]);
 }
 
 #[test]
 fn primes_to_100() {
-    let res: Vec<usize> = make_primes(100).collect();
+    let res: Vec<usize> = PrimeSieve::new(100).into_iter().collect();
     assert_eq!(
         res,
         vec![
@@ -22,19 +22,19 @@ fn primes_to_100() {
 
 #[test]
 fn primes_to_2() {
-    let res: Vec<usize> = make_primes(2).collect();
+    let res: Vec<usize> = PrimeSieve::new(2).into_iter().collect();
     assert_eq!(res, vec![2]);
 }
 
 #[test]
 fn primes_to_1() {
-    let res: Vec<usize> = make_primes(1).collect();
+    let res: Vec<usize> = PrimeSieve::new(1).into_iter().collect();
     assert_eq!(res, vec![]);
 }
 
 #[test]
 fn primes_to_0() {
-    let res: Vec<usize> = make_primes(0).collect();
+    let res: Vec<usize> = PrimeSieve::new(0).into_iter().collect();
     assert_eq!(res, vec![]);
 }
 
@@ -43,9 +43,10 @@ fn prime_limit_not_undershot(limit: usize) -> TestResult {
     if !(2..=1_000_000).contains(&limit) {
         return TestResult::discard();
     }
-    let primes: Vec<usize> = make_primes(limit).collect();
+    let primes: Vec<usize> = PrimeSieve::new(limit).into_iter().collect();
     TestResult::from_bool(
-        make_primes(limit + 1000)
+        PrimeSieve::new(limit + 1000)
+            .into_iter()
             .filter(|&p| p <= limit)
             .all(|p| primes.contains(&p)),
     )
@@ -56,5 +57,5 @@ fn prime_limit_not_overshot(limit: usize) -> TestResult {
     if !(2..=1_000_000).contains(&limit) {
         return TestResult::discard();
     }
-    TestResult::from_bool(make_primes(limit).all(|p| p <= limit))
+    TestResult::from_bool(PrimeSieve::new(limit).into_iter().all(|p| p <= limit))
 }
