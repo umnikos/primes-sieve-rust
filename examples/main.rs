@@ -9,11 +9,18 @@ fn main() {
     let start = Instant::now();
 
     let primes = PrimeSieve::new(limit).into_iter();
+
+    let time_taken_sieve = start.elapsed();
+
     write_to_file(primes, filename);
 
-    let time_taken = start.elapsed();
+    let time_taken_total = start.elapsed();
 
-    println!("Done! Took {} seconds", time_taken.as_secs_f32());
+    println!(
+        "Done! Took {} seconds to sieve and {} in total.",
+        time_taken_sieve.as_secs_f32(),
+        time_taken_total.as_secs_f32()
+    );
 }
 
 fn prompt_user_for_limit() -> usize {
